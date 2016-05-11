@@ -22,6 +22,17 @@ class ReviewErrorsAction extends Action
     public $view = '@importer/views/review-errors';
 
     /**
+     * @return bool
+     */
+    public function beforeRun()
+    {
+        Yii::$app->view->title = 'Review Errors';
+        Yii::$app->view->params['breadcrumbs'][] = Yii::$app->view->title;
+
+        return parent::beforeRun();
+    }
+
+    /**
      * @param $id
      * @return string
      * @throws \Exception

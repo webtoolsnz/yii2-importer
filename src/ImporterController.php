@@ -16,6 +16,24 @@ class ImporterController extends Controller
     public $importModel;
 
     /**
+     * @var string
+     */
+    public $indexTitle = 'Import Records';
+
+    /**
+     * @param \yii\base\Action $action
+     * @return bool
+     * @throws \yii\web\BadRequestHttpException
+     */
+    public function beforeAction($action)
+    {
+        $this->view->title = $this->indexTitle;
+        $this->view->params['breadcrumbs'][] = ['url' => 'index', 'label' => $this->indexTitle];
+
+        return parent::beforeAction($action);
+    }
+
+    /**
      * @return array
      */
     public function actions()

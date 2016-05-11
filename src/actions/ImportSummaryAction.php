@@ -20,6 +20,18 @@ class ImportSummaryAction extends Action
     public $view = '@importer/views/import-summary';
 
     /**
+     * @return bool
+     */
+    public function beforeRun()
+    {
+        Yii::$app->view->title = 'Import Summary';
+        Yii::$app->view->params['breadcrumbs'][] = Yii::$app->view->title;
+
+        return parent::beforeRun();
+    }
+
+
+    /**
      * @param $id
      * @return string
      * @throws \Exception

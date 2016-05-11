@@ -23,6 +23,22 @@ class UpdateRecordAction extends Action
     public $view = '@importer/views/update-record';
 
     /**
+     * @return bool
+     */
+    public function beforeRun()
+    {
+        Yii::$app->view->title = 'Update Record';
+        Yii::$app->view->params['breadcrumbs'][] = [
+            'label' => 'Review Errors',
+            'url' => ['review-errors', 'id' => Yii::$app->request->get('id')]
+        ];
+
+        Yii::$app->view->params['breadcrumbs'][] = Yii::$app->view->title;
+
+        return parent::beforeRun();
+    }
+
+    /**
      * @param $id
      * @param $record_id
      * @return string|\yii\web\Response

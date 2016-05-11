@@ -22,6 +22,17 @@ class ViewAction extends Action
     public $view = '@importer/views/view';
 
     /**
+     * @return bool
+     */
+    public function beforeRun()
+    {
+        Yii::$app->view->title = 'View Import';
+        Yii::$app->view->params['breadcrumbs'][] = Yii::$app->view->title;
+
+        return parent::beforeRun();
+    }
+
+    /**
      * @param $id
      * @return array|string|Response
      * @throws \yii\web\HttpException

@@ -21,6 +21,17 @@ class CreateAction extends Action
     public $view = '@importer/views/create';
 
     /**
+     * @return bool
+     */
+    public function beforeRun()
+    {
+        Yii::$app->view->title = 'Upload File';
+        Yii::$app->view->params['breadcrumbs'][] = Yii::$app->view->title;
+
+        return parent::beforeRun();
+    }
+
+    /**
      * @return string|\yii\web\Response
      */
     public function run()
