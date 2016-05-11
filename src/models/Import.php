@@ -57,7 +57,7 @@ class Import extends \webtoolsnz\importer\models\base\Import
     public function rules()
     {
         return [
-            [['import_model', 'filename', 'data'], 'required'],
+            [['import_model'], 'required'],
             [['status_id', 'abort', 'progress', 'error_count', 'total_rows', 'processed_rows'], 'integer'],
             [['started_at', 'created_at'], 'safe'],
             [['filename', 'data'], 'string'],
@@ -275,6 +275,7 @@ class Import extends \webtoolsnz\importer\models\base\Import
                     $this->error_count++;
                 }
             } catch (\yii\base\Exception $e) {
+                Yii::error($e->getMessage());
                 $this->status_id = Import::STATUS_ERROR;
                 return false;
             }

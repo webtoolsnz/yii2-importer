@@ -108,10 +108,10 @@ class Import extends \yii\db\ActiveRecord
             'import.error_count' => $this->error_count,
             'import.total_rows' => $this->total_rows,
             'import.processed_rows' => $this->processed_rows,
+            'import.import_model' => $this->import_model,
         ]);
 
-        $query->andFilterWhere(['like', 'import.import_model', $this->import_model])
-            ->andFilterWhere(['like', 'import.started_at', $this->started_at])
+        $query->andFilterWhere(['like', 'import.started_at', $this->started_at])
             ->andFilterWhere(['like', 'import.created_at', $this->created_at])
             ->andFilterWhere(['like', 'import.filename', $this->filename])
             ->andFilterWhere(['like', 'import.data', $this->data]);

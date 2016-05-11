@@ -33,7 +33,7 @@ use yii\grid\GridView;
             [
                 'header' => 'Record',
                 'format' => 'raw',
-                'value' => function (\webtoolsnz\importer\BaseImportModel $m) {
+                'value' => function ($m) {
                     return Html::a((string) $m, ['update-record', 'id' => $m->import_id, 'record_id' => $m->id]);
                 }
             ],
@@ -41,7 +41,7 @@ use yii\grid\GridView;
             [
                 'format' => 'raw',
                 'contentOptions' => ['class' => 'text-center'],
-                'value' => function (\webtoolsnz\importer\BaseImportModel $m) {
+                'value' => function ($m) {
                     return Html::a('Delete', ['delete-record', 'id' => $m->import_id, 'record_id' => $m->id], [
                         'class' => 'btn btn-xs btn-danger',
                         'data' => ['method' => 'POST'],

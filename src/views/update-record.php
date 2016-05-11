@@ -14,12 +14,11 @@ use yii\bootstrap\Html;
 
 
 <?php $form = ActiveForm::begin([
-    'id' => 'Campaign',
     'layout' => 'horizontal',
     'enableClientValidation' => false,
 ]); ?>
 
-<?php echo $form->errorSummary($model); ?>
+<?php echo $form->errorSummary($record); ?>
 
 <div class="panel panel-default">
     <div class="panel-heading clearfix">

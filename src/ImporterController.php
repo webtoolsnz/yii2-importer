@@ -21,6 +21,9 @@ class ImporterController extends Controller
     public function actions()
     {
         return [
+            'index' => [
+                'class' => \webtoolsnz\importer\actions\IndexAction::className()
+            ],
             'create' => [
                 'class' => \webtoolsnz\importer\actions\CreateAction::className()
             ],
@@ -44,6 +47,12 @@ class ImporterController extends Controller
             ],
             'confirm' => [
                 'class' => \webtoolsnz\importer\actions\ConfirmAction::className(),
+            ],
+            'view' => [
+                'class' => \webtoolsnz\importer\actions\ViewAction::className()
+            ],
+            'download' => [
+                'class' => \webtoolsnz\importer\actions\DownloadAction::className()
             ],
         ];
     }

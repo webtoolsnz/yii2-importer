@@ -70,7 +70,7 @@ var update = function () {
         $('.percent').text(json.progress);
         $('.error-count').text(json.errors);
         $('.rows-count').text(json.processed);
-        $('.progress-bar').css('width', json.progress);
+        $('.progress-bar').css('width', json.progress).text(json.progress);
 
         if (json.status_id != $running) {
             return window.location.reload();
