@@ -54,6 +54,14 @@ class Import extends \webtoolsnz\importer\models\base\Import
     /**
      * @return array
      */
+    public static function getStatuses()
+    {
+        return self::$_statuses;
+    }
+
+    /**
+     * @return array
+     */
     public function rules()
     {
         return [

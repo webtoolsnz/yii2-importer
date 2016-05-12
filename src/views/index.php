@@ -36,6 +36,7 @@ use webtoolsnz\importer\models\Import;
             'created_at:datetime',
             [
                 'attribute' => 'status_id',
+                'filter' => Import::getStatuses(),
                 'value' => function ($model) {
                     return $model->getStatus();
                 }
