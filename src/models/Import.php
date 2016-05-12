@@ -323,8 +323,7 @@ class Import extends \webtoolsnz\importer\models\base\Import
         }
 
         if (!$model->validate()) {
-            $firstErrors = $model->getFirstErrors();
-            $model->import_error = reset($firstErrors);
+            $model->import_error = $model->generateErrorSummary();
             $model->import_status_id = BaseImportModel::STATUS_ERROR;
         }
 
