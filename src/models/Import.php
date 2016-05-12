@@ -318,7 +318,7 @@ class Import extends \webtoolsnz\importer\models\base\Import
         foreach ($row as $colName => $value) {
             echo '.';
             $attr = $columnMap[$colName];
-            $model->$attr = $value;
+            $model->$attr = trim($value);
         }
 
         if (!$model->validate()) {
