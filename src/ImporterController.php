@@ -11,6 +11,13 @@ use yii\web\Controller;
 class ImporterController extends Controller
 {
     /**
+     * The base class to represent the `import` table, overwrite this to your local `\app\models\Import` if needed.
+     *
+     * @var string
+     */
+    public $importClass = '\webtoolsnz\importer\models\Import';
+
+    /**
      * @var string
      */
     public $importModel;
@@ -106,7 +113,8 @@ class ImporterController extends Controller
      */
     public function findModel($id)
     {
-        $model = Import::findOne($id);
+        $importClass = $this->importClass;
+        $model = $importClass::findOne($id);
 
         if (!$model) {
             throw new \yii\web\HttpException(400, 'Invalid Import ID');

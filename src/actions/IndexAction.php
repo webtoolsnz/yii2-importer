@@ -25,7 +25,8 @@ class IndexAction extends Action
      */
     public function run()
     {
-        $model = new Import();
+        $importClass = $this->controller->importClass;
+        $model = new $importClass;
         $model->import_model = $this->controller->importModel;
         $dataProvider = $model->search();
 

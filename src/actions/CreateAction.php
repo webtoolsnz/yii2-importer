@@ -36,7 +36,8 @@ class CreateAction extends Action
      */
     public function run()
     {
-        $model = new Import();
+        $importClass = $this->controller->importClass;
+        $model = new $importClass;
         $model->import_model = $this->controller->importModel;
         $model->setScenario(Import::SCENARIO_INSERT);
 
