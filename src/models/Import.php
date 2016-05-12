@@ -279,7 +279,7 @@ class Import extends \webtoolsnz\importer\models\base\Import
 
             try {
                 $row = array_combine($columns, $row);
-                if (!$this->processRow($row, $columnMap)) {
+                if (!$this->processRow($row, $columnMap, $index)) {
                     $this->error_count++;
                 }
             } catch (\yii\base\Exception $e) {
@@ -302,7 +302,7 @@ class Import extends \webtoolsnz\importer\models\base\Import
      * @return bool
      * @throws \yii\base\Exception
      */
-    public function processRow($row, $columnMap)
+    public function processRow($row, $columnMap, $index)
     {
         $model = $this->getModelInstance();
         $model->import_id = $this->id;
@@ -313,6 +313,7 @@ class Import extends \webtoolsnz\importer\models\base\Import
         $model->trigger(BaseImportModel::EVENT_BEFORE_PROCESS_ROW, new ImportEvent([
             'import' => $this,
             'row' => $row,
+            'rowIndex' => $index,
         ]));
 
         foreach ($row as $colName => $value) {

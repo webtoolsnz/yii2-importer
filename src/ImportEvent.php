@@ -13,4 +13,9 @@ class ImportEvent extends \yii\base\Event
      * @var array
      */
     public $row;
+
+    /**
+     * @var integer
+     */
+    public $rowIndex;
 }
