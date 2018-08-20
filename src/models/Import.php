@@ -44,6 +44,11 @@ class Import extends \webtoolsnz\importer\models\base\Import
     public $file;
 
     /**
+     * @var array column mapping
+     */
+    public $columnMap = [];
+
+    /**
      * @return mixed
      */
     public function getStatus()
@@ -191,13 +196,46 @@ class Import extends \webtoolsnz\importer\models\base\Import
      */
     public function validateCSV()
     {
-        $csv = Reader::createFromString($this->data);
+        $csv = $this->createReader();
         $headers = array_filter($csv->fetchOne());
         $model = $this->getModelInstance();
 
-        if ($headers !== array_keys($model->getColumnMap())) {
-            $this->addError('file', 'CSV columns do not appear to be valid.');
+        $this->columnMap = $model->attributes;
+
+        if (method_exists($model, 'getColumnMap')) {
+            $this->columnMap = $model->getColumnMap();
         }
+
+        $requiredAttributes = [];
+        $ignoredAttributes = ['id', 'import_id', 'import_status_id', 'import_error'];
+        $oldScenario = $model->scenario;
+        $model->setScenario(self::SCENARIO_IMPORT_VALIDATE);
+        foreach($model->attributes as $name => $value) {
+            if (!in_array($name, $ignoredAttributes) && $model->isAttributeRequired($name)) {
+                $requiredAttributes[] = $this->columnMap[$name];
+            }
+        }
+        $model->setScenario($oldScenario);
+
+        foreach($requiredAttributes as $attr) {
+            if (!in_array($attr, $headers)) {
+                $this->addError('file', 'Required attribute '.$attr.' not found in file');
+            }
+        }
+        if ($headers !== array_keys($model->getColumnMap())) {
+            // don't think this is required anymore
+            //$this->addError('file', 'CSV columns do not appear to be valid.');
+        }
+
+        $headerMapping = array_combine($headers, $headers);
+        foreach($headerMapping as $headerAttr) {
+            if (isset($this->columnMap[$headerAttr])) {
+                $headerMapping[$headerAttr] = $this->columnMap[$headerAttr];
+            }
+        }
+        $this->columnMap = $headerMapping;
+
+        return $csv;
     }
 
     /**
@@ -258,9 +296,17 @@ class Import extends \webtoolsnz\importer\models\base\Import
         }
     }
 
+    private function createReader()
+    {
+        return Reader::createFromString($this->data);
+    }
+
     public function processRows()
     {
-        $csv = Reader::createFromString($this->data);
+        //$csv = $this->createReader();
+
+        $csv = $this->validateCSV(); // revalidate CSV to generate mappings
+
         $csv->setOffset(1);
 
         // Add filter to skip empty rows
@@ -268,8 +314,9 @@ class Import extends \webtoolsnz\importer\models\base\Import
             return strlen(trim(implode('', $row))) > 0;
         });
 
-        $columnMap = $this->getModelInstance()->getColumnMap();
+        $columnMap = $this->columnMap;
         $columns = array_keys($columnMap);
+
 
         $csv->each(function ($row, $index) use ($columns, $columnMap) {
             $this->refresh();
@@ -283,6 +330,7 @@ class Import extends \webtoolsnz\importer\models\base\Import
                     $this->error_count++;
                 }
             } catch (\yii\base\Exception $e) {
+                echo $e;
                 Yii::error($e->getMessage());
                 $this->status_id = Import::STATUS_ERROR;
                 return false;
@@ -317,9 +365,11 @@ class Import extends \webtoolsnz\importer\models\base\Import
         ]));
 
         foreach ($row as $colName => $value) {
-            echo '.';
             $attr = $columnMap[$colName];
-            $model->$attr = trim($value);
+            if ($model->hasAttribute($attr)) {
+                echo '.';
+                $model->$attr = trim($value);
+            }
         }
 
         if (!$model->validate()) {
