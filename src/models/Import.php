@@ -217,16 +217,8 @@ class Import extends \webtoolsnz\importer\models\base\Import
         }
         $model->setScenario($oldScenario);
 
-        $headerMapping = array_combine($headers, $headers);
-        foreach($headerMapping as $headerAttr) {
-            if (isset($this->columnMap[$headerAttr])) {
-                $headerMapping[$headerAttr] = $this->columnMap[$headerAttr];
-            }
-        }
-        $this->columnMap = $headerMapping;
-
         foreach($requiredAttributes as $attr) {
-            if (!in_array($attr, $headerMapping)) {
+            if (!in_array($attr, $headers)) {
                 $this->addError('file', 'Required attribute '.$attr.' not found in file');
             }
         }
@@ -235,7 +227,13 @@ class Import extends \webtoolsnz\importer\models\base\Import
             //$this->addError('file', 'CSV columns do not appear to be valid.');
         }
 
-
+        $headerMapping = array_combine($headers, $headers);
+        foreach($headerMapping as $headerAttr) {
+            if (isset($this->columnMap[$headerAttr])) {
+                $headerMapping[$headerAttr] = $this->columnMap[$headerAttr];
+            }
+        }
+        $this->columnMap = $headerMapping;
 
         return $csv;
     }
@@ -332,7 +330,6 @@ class Import extends \webtoolsnz\importer\models\base\Import
                     $this->error_count++;
                 }
             } catch (\yii\base\Exception $e) {
-                echo $e;
                 Yii::error($e->getMessage());
                 $this->status_id = Import::STATUS_ERROR;
                 return false;
