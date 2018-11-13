@@ -18,4 +18,10 @@ class ImportEvent extends \yii\base\Event
      * @var integer
      */
     public $rowIndex;
+
+    /**
+     * @var array
+     */
+    public $unmapped;
+
 }
