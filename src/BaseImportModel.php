@@ -12,6 +12,7 @@ class BaseImportModel extends \yii\db\ActiveRecord
      * This event is triggered before processing each row.
      */
     const EVENT_BEFORE_PROCESS_ROW = 'before_process_row';
+    const EVENT_AFTER_PROCESS_ROW = 'after_process_row';
 
     const STATUS_SUCCESS = 10;
     const STATUS_ERROR = 20;
