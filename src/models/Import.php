@@ -217,16 +217,6 @@ class Import extends \webtoolsnz\importer\models\base\Import
         }
         $model->setScenario($oldScenario);
 
-        foreach($requiredAttributes as $attr) {
-            if (!in_array($attr, $headers)) {
-                $this->addError('file', 'Required attribute '.$attr.' not found in file');
-            }
-        }
-        if ($headers !== array_keys($model->getColumnMap())) {
-            // don't think this is required anymore
-            //$this->addError('file', 'CSV columns do not appear to be valid.');
-        }
-
         $headerMapping = array_combine($headers, $headers);
         foreach($headerMapping as $headerAttr) {
             if (isset($this->columnMap[$headerAttr])) {
@@ -234,6 +224,12 @@ class Import extends \webtoolsnz\importer\models\base\Import
             }
         }
         $this->columnMap = $headerMapping;
+
+        foreach($requiredAttributes as $attr) {
+            if (!in_array($attr, $headerMapping)) {
+                $this->addError('file', 'Required attribute '.$attr.' not found in file');
+            }
+        }
 
         return $csv;
     }
