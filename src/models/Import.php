@@ -313,8 +313,10 @@ class Import extends \webtoolsnz\importer\models\base\Import
         $columnMap = $this->columnMap;
         $columns = array_keys($columnMap);
 
+        gc_enable(); // make sure garbage collector is on
+        $memUsage = memory_get_usage(true); // memUsage should remain relatively static
 
-        $csv->each(function ($row, $index) use ($columns, $columnMap) {
+        $csv->each(function ($row, $index) use ($columns, $columnMap, $memUsage) {
             $this->refresh();
             if ($this->abort) {
                 return false;
@@ -329,6 +331,14 @@ class Import extends \webtoolsnz\importer\models\base\Import
                 Yii::error($e->getMessage());
                 $this->status_id = Import::STATUS_ERROR;
                 return false;
+            }
+            /**
+             * I've seen memory usage spike horrendously, manually fire the garbage collector
+             * if we're 20mb over the starting point
+             */
+            if (($memUsage + 20000000) < memory_get_usage(true)) {
+                gc_collect_cycles(); // manually run the garbage collector,
+                $memUsage = memory_get_usage(true); // reset to the starting memory point
             }
 
             $this->processed_rows++;
@@ -359,13 +369,13 @@ class Import extends \webtoolsnz\importer\models\base\Import
             'rowIndex' => $index,
         ]));
 
+        echo '.';
         $unmapped = [];
         foreach ($row as $colName => $value) {
             $attr = $columnMap[$colName];
             if ($model->hasAttribute($attr)) {
-                echo '.';
                 $model->$attr = trim($value);
-            } else {
+            } elseif ($value) {
                 $unmapped[$attr ? $attr : $colName] = $value;
             }
         }
@@ -386,8 +396,12 @@ class Import extends \webtoolsnz\importer\models\base\Import
         if (!$model->save()) {
             throw new \yii\base\Exception('Unable to save record ' . json_encode($model->errors));
         }
+        $import_status_id = $model->import_status_id;
+        unset($model);
+        unset($unmapped);
 
-        return $model->import_status_id != BaseImportModel::STATUS_ERROR;
+
+        return $import_status_id != BaseImportModel::STATUS_ERROR;
     }
 
     /**
