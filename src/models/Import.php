@@ -192,12 +192,13 @@ class Import extends \webtoolsnz\importer\models\base\Import
     }
 
     /**
-     *
+     * @return Reader
      */
     public function validateCSV()
     {
         $csv = $this->createReader();
-        $headers = array_filter($csv->fetchOne());
+        $csv->setHeaderOffset(1);
+        $headers = array_filter($csv->getHeader());
         $model = $this->getModelInstance();
 
         $this->columnMap = $model->attributes;
@@ -240,10 +241,8 @@ class Import extends \webtoolsnz\importer\models\base\Import
     public function getTotalRows()
     {
         $csv = Reader::createFromString($this->data);
-        $csv->setOffset(1); //exclude the header
-        return $csv->each(function () {
-            return true;
-        });
+        $csv->setHeaderOffset(1);
+        return count($csv);
     }
 
     /**
@@ -292,6 +291,9 @@ class Import extends \webtoolsnz\importer\models\base\Import
         }
     }
 
+    /**
+     * @return Reader
+     */
     private function createReader()
     {
         return Reader::createFromString($this->data);
@@ -303,12 +305,12 @@ class Import extends \webtoolsnz\importer\models\base\Import
 
         $csv = $this->validateCSV(); // revalidate CSV to generate mappings
 
-        $csv->setOffset(1);
-
         // Add filter to skip empty rows
+        /*
         $csv->addFilter(function ($row) {
             return strlen(trim(implode('', $row))) > 0;
         });
+        */
 
         $columnMap = $this->columnMap;
         $columns = array_keys($columnMap);
@@ -316,7 +318,7 @@ class Import extends \webtoolsnz\importer\models\base\Import
         gc_enable(); // make sure garbage collector is on
         $memUsage = memory_get_usage(true); // memUsage should remain relatively static
 
-        $csv->each(function ($row, $index) use ($columns, $columnMap, $memUsage) {
+        foreach($csv as $index => $row) {
             $this->refresh();
             if ($this->abort) {
                 return false;
@@ -330,7 +332,7 @@ class Import extends \webtoolsnz\importer\models\base\Import
             } catch (\yii\base\Exception $e) {
                 Yii::error($e->getMessage());
                 $this->status_id = Import::STATUS_ERROR;
-                return false;
+                continue;
             }
             /**
              * I've seen memory usage spike horrendously, manually fire the garbage collector
@@ -345,8 +347,7 @@ class Import extends \webtoolsnz\importer\models\base\Import
             $this->progress = $this->getPercent();
             $this->update(false, ['processed_rows', 'progress', 'status_id', 'error_count']);
 
-            return true;
-        });
+        }
     }
 
     /**
