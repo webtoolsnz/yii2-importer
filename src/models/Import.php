@@ -213,7 +213,7 @@ class Import extends \webtoolsnz\importer\models\base\Import
         $model->setScenario(self::SCENARIO_IMPORT_VALIDATE);
         foreach($model->attributes as $name => $value) {
             if (!in_array($name, $ignoredAttributes) && $model->isAttributeRequired($name)) {
-                $requiredAttributes[] = $this->columnMap[$name];
+                $requiredAttributes[] = ArrayHelper::getValue($this->columnMap, $name, $name);
             }
         }
         $model->setScenario($oldScenario);
