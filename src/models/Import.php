@@ -197,7 +197,7 @@ class Import extends \webtoolsnz\importer\models\base\Import
     public function validateCSV()
     {
         $csv = $this->createReader();
-        $csv->setHeaderOffset(1);
+        $csv->setHeaderOffset(0);
         $headers = array_filter($csv->getHeader());
         $model = $this->getModelInstance();
 
@@ -241,7 +241,7 @@ class Import extends \webtoolsnz\importer\models\base\Import
     public function getTotalRows()
     {
         $csv = Reader::createFromString($this->data);
-        $csv->setHeaderOffset(1);
+        $csv->setHeaderOffset(0);
         return count($csv);
     }
 
