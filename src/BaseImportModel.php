@@ -25,6 +25,16 @@ class BaseImportModel extends \yii\db\ActiveRecord
 
 
     /**
+     * If you have extra columns on your import table that need to be ignored by the validation, you can add them here.
+     *
+     * @return array
+     */
+    public function getIgnoredAttributes()
+    {
+        return  ['id', 'import_id', 'import_status_id', 'import_error'];
+    }
+
+    /**
      * @param $import_id
      * @return array
      */

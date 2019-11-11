@@ -208,7 +208,7 @@ class Import extends \webtoolsnz\importer\models\base\Import
         }
 
         $requiredAttributes = [];
-        $ignoredAttributes = ['id', 'import_id', 'import_status_id', 'import_error'];
+        $ignoredAttributes = $model->getIgnoredAttributes();
         $oldScenario = $model->scenario;
         $model->setScenario(self::SCENARIO_IMPORT_VALIDATE);
         foreach($model->attributes as $name => $value) {
