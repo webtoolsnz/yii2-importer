@@ -23,6 +23,11 @@ class BaseImportModel extends \yii\db\ActiveRecord
      */
     public $deleteAfterImport = true;
 
+    /**
+     * If you want to ignore the case of header names, enable this.
+     * @var bool
+     */
+    public $headerIgnoreCase = false;
 
     /**
      * If you have extra columns on your import table that need to be ignored by the validation, you can add them here.

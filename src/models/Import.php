@@ -198,13 +198,18 @@ class Import extends \webtoolsnz\importer\models\base\Import
     {
         $csv = $this->createReader();
         $csv->setHeaderOffset(0);
-        $headers = array_filter($csv->getHeader());
+        $headers = array_map('trim', array_filter($csv->getHeader()));
         $model = $this->getModelInstance();
 
         $this->columnMap = $model->attributes;
 
         if (method_exists($model, 'getColumnMap')) {
             $this->columnMap = $model->getColumnMap();
+        }
+
+        if ($model->headerIgnoreCase) {
+            $headers = array_map('strtolower', $headers);
+            $this->columnMap = array_change_key_case($this->columnMap, CASE_LOWER);
         }
 
         $requiredAttributes = [];
