@@ -1,5 +1,5 @@
 {
-  "name": "webtoolsnz/yii2-importer",
+  "name": "webtoolsnz/yii1-importer",
   "description": "Yii2 CSV ActiveRecord importer",
   "keywords": [
     "yii2",
@@ -23,7 +23,7 @@
     }
   ],
   "require": {
-    "yiisoft/yii2": "^2.0.7",
+    "yiisoft/yii2": "^2.0.38",
     "league/csv": "^9.0"
   },
   "require-dev": {
