@@ -21,7 +21,7 @@ class BaseImportModel extends \yii\db\ActiveRecord
      * Whether or not the import model should be deleted when the import is complete.
      * @var bool
      */
-    public $deleteAfterImport = true;
+    public $deleteAfterImport = false;
 
     /**
      * If you want to ignore the case of header names, enable this.

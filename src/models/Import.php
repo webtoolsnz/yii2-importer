@@ -87,6 +87,7 @@ class Import extends \webtoolsnz\importer\models\base\Import
             ],
             [['file'], 'safe', 'on' => self::SCENARIO_INSERT],
             [['data'], 'validateCSV', 'on' => self::SCENARIO_INSERT],
+            [['user_id'], 'integer'],
         ];
     }
 

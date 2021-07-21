@@ -109,6 +109,7 @@ class Import extends \yii\db\ActiveRecord
             'import.total_rows' => $this->total_rows,
             'import.processed_rows' => $this->processed_rows,
             'import.import_model' => $this->import_model,
+            'import.user_id' => $this->user_id,
         ]);
 
         $query->andFilterWhere(['like', 'import.started_at', $this->started_at])
