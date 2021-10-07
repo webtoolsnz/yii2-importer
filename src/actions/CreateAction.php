@@ -41,6 +41,8 @@ class CreateAction extends Action
         $model->import_model = $this->controller->importModel;
         $model->setScenario(Import::SCENARIO_INSERT);
 
+        $model->user_id = $this->controller->user_id ?? null;
+        
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->controller->reRoute($model);
         }

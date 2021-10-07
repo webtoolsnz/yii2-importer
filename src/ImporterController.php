@@ -23,6 +23,11 @@ class ImporterController extends Controller
     public $importModel;
 
     /**
+     * @var int
+     */
+    public $user_id;
+
+    /**
      * @var string
      */
     public $indexTitle = 'Import Records';

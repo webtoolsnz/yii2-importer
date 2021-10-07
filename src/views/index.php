@@ -37,6 +37,12 @@ use webtoolsnz\importer\models\Import;
             ],
             'created_at:datetime',
             [
+                'attribute' => 'user_id',
+                'value' => function ($model) {
+                    return $model->user_id ?? null;
+                }
+            ],
+            [
                 'attribute' => 'status_id',
                 'filter' => Import::getStatuses(),
                 'value' => function ($model) {
