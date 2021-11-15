@@ -8,12 +8,12 @@
 use yii\bootstrap\ActiveForm;
 use yii\bootstrap\Html;
 
+$this->title = 'Pricing Loader | Import';
 ?>
 
-
-<div class="panel panel-default">
-    <div class="panel-heading">Upload File</div>
-    <div class="panel-body">
+<div class="panel">    
+    <h3><?php \uconx\Output::encode($this->title); ?></h3>
+    <div class="panel-body" style="padding: 0;">
 
         <?php $form = ActiveForm::begin([
             'id' => $model->formName(),
@@ -25,19 +25,12 @@ use yii\bootstrap\Html;
 
         <?= $form->field($model, 'file')->fileInput() ?>
 
-
-        <div class="text-right">
-        <?= Html::submitButton('Start Import <span class="glyphicon glyphicon-chevron-right"></span>',
-            ['class' => 'btn btn-success btn-sm']); ?>
+        <div class="text-left">        
+        <?= Html::submitButton('Upload', ['class' => 'btn btn-primary btn-sm']); ?>
         </div>
-
 
         <?php ActiveForm::end() ?>
 
     </div>
 </div>
 </div>
-
-
-
-
