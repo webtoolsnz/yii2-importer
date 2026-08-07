@@ -27,7 +27,7 @@ use yii\bootstrap\Html;
 
 
         <div class="text-right">
-        <?= Html::submitButton('Start Import <span class="glyphicon glyphicon-chevron-right"></span>',
+        <?= Html::submitButton('Start Import <span class="fa fa-chevron-right"></span>',
             ['class' => 'btn btn-success btn-sm']); ?>
         </div>
 

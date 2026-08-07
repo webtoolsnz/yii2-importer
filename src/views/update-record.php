@@ -38,7 +38,7 @@ use yii\bootstrap\Html;
 
 
 <p class="pull-right">
-    <?= Html::submitButton('<span class="glyphicon glyphicon-check"></span> Save', [
+    <?= Html::submitButton('<span class="fa fa-check"></span> Save', [
         'id' => 'save-' . $record->formName(),
         'class' => 'btn btn-primary'
     ]); ?>

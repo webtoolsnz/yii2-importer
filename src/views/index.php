@@ -13,7 +13,7 @@ use webtoolsnz\importer\models\Import;
 ?>
 
 <p class="text-right">
-    <?= Html::a('<span class="glyphicon glyphicon-plus"></span> New Import', ['create'], ['class' => 'btn btn-success']) ?>
+    <?= Html::a('<span class="fa fa-plus"></span> New Import', ['create'], ['class' => 'btn btn-success']) ?>
 </p>
 <div class="table-responsive">
     <?php \yii\widgets\Pjax::begin(); ?>
