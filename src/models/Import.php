@@ -246,7 +246,7 @@ class Import extends \webtoolsnz\importer\models\base\Import
      */
     public function getTotalRows()
     {
-        $csv = Reader::createFromString($this->data);
+        $csv = Reader::fromString($this->data);
         $csv->setHeaderOffset(0);
         return count($csv);
     }
@@ -302,7 +302,7 @@ class Import extends \webtoolsnz\importer\models\base\Import
      */
     private function createReader()
     {
-        return Reader::createFromString($this->data);
+        return Reader::fromString($this->data);
     }
 
     public function processRows()
